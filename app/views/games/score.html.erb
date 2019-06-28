@@ -1,0 +1,17 @@
+<h1>Games#score</h1>
+<p>Find me in app/views/games/score.html.erb</p>
+
+<form action="/new">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input type="text" name="games">
+  <input type="submit" value="Make a guess">
+</form>
+
+
+<h1>Your results</h1>
+<p><%= "Your word: #{@guess}" %></p>
+<p><%= "Your score: #{@result[:score]}" %></p>
+<!--
+The word can't be built out of the original grid
+The word is valid according to the grid, but is not a valid English word
+The word is valid according to the grid and is an English word -->
