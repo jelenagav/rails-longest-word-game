@@ -1,3 +1,5 @@
+require "open-uri"
+
 class GamesController < ApplicationController
   def ask
     session[:start_time] = Time.now
@@ -16,13 +18,13 @@ class GamesController < ApplicationController
     }
 
     if !included?(params[:word])
-      @result[:message] = "Not in the grid!"
+      @result[:message] = "Not in the grid"
     elsif !real_word?(params[:word])
-      @result[:message] = "Not an english word!"
+      @result[:message] = "This is not an english word"
     else
       start_time = session[:start_time]
       @result[:score] = 1000 - (end_time - start_time.to_time)
-      @result[:message] = "Bravo!!"
+      @result[:message] = "Bravo"
     end
   end
 
@@ -40,8 +42,3 @@ class GamesController < ApplicationController
     word.chars.all? { |char| word.count(char) <= grid.count(char) }
   end
 end
-
-
-# The word can't be built out of the original grid
-# The word is valid according to the grid, but is not a valid English word
-# The word is valid according to the grid and is an English word
