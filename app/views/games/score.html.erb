@@ -1,13 +1,24 @@
-<h1>Games#score</h1>
-<p>Find me in app/views/games/score.html.erb</p>
+<div class="wrapper">
+  <%= @new %>
+  <%= @score %>
 
-<form action="/new">
-  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <input type="text" name="games">
-  <input type="submit" value="Make a guess">
-</form>
+  <div class="message width">
+    <p><%= @result[:message] %></p>
+  </div>
 
+  <div class="output width">
+    <div class="response">
+      <p>SCORE:</p>
+      <h4><%= @result[:score].round(0) %> points</h4>
+    </div>
 
-<h1>Your results</h1>
-<p><%= "Your word: #{@guess}" %></p>
-<p><%= "Your score: #{@result[:score]}" %></p>
+    <div class="response">
+      <p>TIME TAKEN:</p>
+      <h4><%= @result[:time].round(2) %> seconds</h4>
+    </div>
+  </div>
+
+  <div class="width">
+    <%= link_to "Play New Game", new_path, class: "btn btn-default btn-block link" %>
+  </div>
+</div>
