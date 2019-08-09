@@ -25,7 +25,17 @@ class GamesController < ApplicationController
     result
   end
 
-    def compute_score(attempt, time_taken)
+  def included?(guess, grid)
+    guess.chars.all? { |letter| guess.count(letter) <= grid.count(letter) }
+  end
+
+  def english_word?(word)
+    response = open("https://wagon-dictionary.herokuapp.com/#{word}")
+    json = JSON.parse(response.read)
+    json['found']
+  end
+
+  def compute_score(attempt, time_taken)
     time_taken > 60.0 ? 0 : attempt.size * (1.0 - time_taken / 60.0)
   end
 
@@ -33,32 +43,12 @@ class GamesController < ApplicationController
     if included?(attempt.upcase, grid)
       if english_word?(attempt)
         score = compute_score(attempt, time)
-        [score, "Good job! #{attempt.upcase} is an English word that can be spelt from the grid."]
+        [score, "Good job! #{attempt.upcase} is an English word that can be spelled with the given letters."]
       else
         [0, "#{attempt.upcase} is not an English word."]
       end
     else
-      [0, "#{attempt.upcase} cannot be spelt from the letters in the grid."]
+      [0, "#{attempt.upcase} cannot be spelled with the given letters."]
     end
   end
-
-  private
-
-  def english_word?(word)
-    response = open("https://wagon-dictionary.herokuapp.com/#{word}").read
-    formated_response = JSON.parse(response)
-    formated_response['found']
-  end
-
-  def included?(word)
-    word = word.upcase
-    grid = params[:grid]
-    word.chars.all? { |char| word.count(char) <= grid.count(char) }
-  end
 end
-
-
-
-
-
-
